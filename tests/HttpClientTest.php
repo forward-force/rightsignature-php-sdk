@@ -15,7 +15,7 @@ class HttpClientTest extends TestCase
             $reflector = new \ReflectionProperty($fixture, 'client');
             $reflector->setAccessible(true);
             $host = $reflector->getValue($fixture)->getConfig()['base_uri']->getHost();
-            $this->assertSame('apis.rightSignature.com', $host);
+            $this->assertSame('api.rightsignature.com', $host);
         } catch (\ReflectionException $e) {
             $this->assertTrue(false);
         }
