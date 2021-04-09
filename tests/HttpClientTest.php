@@ -9,13 +9,17 @@ class HttpClientTest extends TestCase
 {
     public function testBaseURL()
     {
-        $fixture = new HttpClient('123456');
+        $fakeToken = '123456';
+        $fixture = new HttpClient($fakeToken);
 
         try {
             $reflector = new \ReflectionProperty($fixture, 'client');
             $reflector->setAccessible(true);
             $host = $reflector->getValue($fixture)->getConfig()['base_uri']->getHost();
             $this->assertSame('api.rightsignature.com', $host);
+
+            $authenticatedFakeToken = $reflector->getValue($fixture)->getConfig()['headers']['Authorization:Basic'];
+            $this->assertSame($fakeToken, base64_decode($authenticatedFakeToken));
         } catch (\ReflectionException $e) {
             $this->assertTrue(false);
         }
@@ -30,12 +34,12 @@ class HttpClientTest extends TestCase
             $reflector->setAccessible(true);
 
             $query = $reflector->invoke($fixture, '/test');
-            $this->assertSame($fixture::API_VERSION . '/test/?token=123456', $query);
+            $this->assertSame($fixture::API_VERSION . '/test', $query);
 
             $fixture = new HttpClient('123456');
             $fixture->addQueryParameter('foo', 'bar');
             $query = $reflector->invoke($fixture, '/test');
-            $this->assertSame($fixture::API_VERSION . '/test/?token=123456&foo=bar', $query);
+            $this->assertSame($fixture::API_VERSION . '/test/?foo=bar', $query);
         } catch (\ReflectionException $e) {
             $this->assertTrue(false);
         }

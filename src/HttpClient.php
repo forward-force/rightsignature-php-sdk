@@ -39,8 +39,12 @@ class HttpClient
 
     public function __construct(string $apiKey)
     {
-        $this->client = new Client(['base_uri' => self::BASE_URL . '/']);
-        $this->addQueryParameter('token', $apiKey);
+        $encodedToken = base64_encode($apiKey);
+        $this->client = new Client(
+            [
+                'base_uri' => self::BASE_URL . '/', 'headers' => ['Authorization:Basic' => $encodedToken]
+            ]
+        );
     }
 
     /**
