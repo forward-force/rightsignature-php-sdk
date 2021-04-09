@@ -11,8 +11,8 @@ $token = getenv('RIGHT_SIGNATURE_API_KEY');
 $rightSignature = new RightSignature($token);
 
 try {
-    $property = $rightSignature->property('151 Battle Green Dr', 'Rochester', 'NY', '14624');
-    var_dump($property);
+    $documents = $rightSignature->documents();
+    var_dump($documents);
 } catch (GuzzleException $e) {
     var_dump($e->getMessage());
 }
