@@ -14,7 +14,7 @@ class HttpClient
     use Parametarable;
 
     public const API_VERSION = 'v1';
-    public const BASE_URL = 'https://api.rightsignature.com/public';
+    public const BASE_URL = 'https://api.rightsignature.com/public/';
 
     /**
      * Guzzle Client
@@ -42,7 +42,7 @@ class HttpClient
         $encodedToken = base64_encode($apiKey);
         $this->client = new Client(
             [
-                'base_uri' => self::BASE_URL . '/', 'headers' => ['Authorization:Basic' => $encodedToken]
+                'base_uri' => self::BASE_URL . '/', 'headers' => ['Authorization:Basic ' => $encodedToken]
             ]
         );
     }
@@ -83,7 +83,8 @@ class HttpClient
             return [];
         }
 
-        return $response['data'];
+        unset($response['meta']);
+        return reset($response);
     }
 
     /**

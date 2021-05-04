@@ -12,4 +12,9 @@ class Document extends HttpClient implements ApiAwareContract
     {
         return $this->get($this->buildQuery('/documents'));
     }
+
+    public function getById(string $uuid): array
+    {
+        return $this->get($this->buildQuery('/documents/' . $uuid));
+    }
 }

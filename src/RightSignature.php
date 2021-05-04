@@ -21,11 +21,10 @@ class RightSignature
     /**
      * Fetch documents from rightSignature.com
      *
-     * @return array
+     * @return Document
      */
-    public function documents(): array
+    public function documents(): Document
     {
-        $document = new Document($this->token);
-        return $document->fetch();
+        return new Document($this->token);
     }
 }

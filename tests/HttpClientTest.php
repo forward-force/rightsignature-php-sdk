@@ -18,7 +18,7 @@ class HttpClientTest extends TestCase
             $host = $reflector->getValue($fixture)->getConfig()['base_uri']->getHost();
             $this->assertSame('api.rightsignature.com', $host);
 
-            $authenticatedFakeToken = $reflector->getValue($fixture)->getConfig()['headers']['Authorization:Basic'];
+            $authenticatedFakeToken = $reflector->getValue($fixture)->getConfig()['headers']['Authorization:Basic '];
             $this->assertSame($fakeToken, base64_decode($authenticatedFakeToken));
         } catch (\ReflectionException $e) {
             $this->assertTrue(false);
