@@ -61,6 +61,19 @@ class HttpClient
     }
 
     /**
+     * Send post request
+     *
+     * @param string $endpoint
+     * @return array
+     * @throws GuzzleException
+     */
+    public function post(string $endpoint): array
+    {
+        $this->response = $this->client->post($endpoint, ['form_params' => $this->getBodyParams()]);
+        return $this->toArray();
+    }
+
+    /**
      * Num of results returned by the API call
      *
      * @return int
