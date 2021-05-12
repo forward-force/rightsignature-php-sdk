@@ -118,7 +118,7 @@ trait Parametarable
 
     /**
      * @param array $mergeFields
-     * @return Parametarable
+     * @return self
      */
     public function setMergeFields(array $mergeFields): self
     {
