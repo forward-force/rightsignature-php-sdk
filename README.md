@@ -11,17 +11,62 @@ composer require forward-force/rightSignature-api-sdk
 
 ### Authentication
 
-Fetch  by address:
+In order to authenticate, you need to pass the *PRIVATE API TOKEN* like so:
 
+```
+$rightSignature = new RightSignature($token); //pv_deec47538d80245234a66e1d14d38be81
+```
+
+### Examples
+
+Fetch all documents:
 ```php
 $rightSignature = new RightSignature($token);
 
 try {
-    $property = $rightSignature->property('151 Battle Green Dr', 'Rochester', 'NY', '14624');
-    var_dump($property);
+    $documents = $rightSignature->documents()->fetch();
+    var_dump($documents);
 } catch (GuzzleException $e) {
     var_dump($e->getMessage());
 }
+```
+
+Get document by id:
+
+```php
+$document = $rightSignature->documents()->getById('fcc2517e-c596-4d91-9f59-112a292eb643');
+```
+
+Clone template, prepare template (populate merge fields), and send off to signers:
+
+```php
+$signer1 = ['name' => 'buyer_signer', 'signer_email' => 'foo@example.com', 'signer_name' => 'John Doe'];
+$signer2 = ['name' => 'seller_signer', 'signer_email' => 'bar@example.com', 'signer_name' => 'Jane Smith'];
+
+$document = $rightSignature->documents()
+    ->addBodyParameter('roles', [$signer1, $signer2])
+    ->addBodyParameter('reusable_template', [
+        'roles' => [$signer1, $signer2]
+    ])
+    ->addBodyParameter("message", "Please sign this")
+    ->addBodyParameter('name', 'Name 1')
+    ->addMergeField('client_name', 'The Client')
+    ->sendDocument('fcc2517e-c596-4d91-9f59-112a292eb643');
+```
+Get all reusable templates:
+
+```php
+try {
+    $documents = $rightSignature->documents()->fetchReusableTemplates();
+    var_dump($documents);
+} catch (GuzzleException $e) {
+    var_dump($e->getMessage());
+}
+```
+
+Get reusable template by id
+```php
+$document = $rightSignature->documents()->getReusableTemplateById('fcc2517e-c596-4d91-9f59-112a292eb643');
 ```
 
 ## Contributions

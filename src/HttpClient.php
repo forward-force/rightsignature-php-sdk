@@ -16,6 +16,10 @@ class HttpClient
     public const API_VERSION = 'v1';
     public const BASE_URL = 'https://api.rightsignature.com/public';
 
+    public array $defaults = [
+        'expires_in' => 30
+    ];
+
     /**
      * Guzzle Client
      *
@@ -42,7 +46,7 @@ class HttpClient
         $encodedToken = base64_encode($apiKey);
         $this->client = new Client(
             [
-                'base_uri' => self::BASE_URL . '/', 'headers' => ['Authorization:Basic' => $encodedToken]
+                'base_uri' => self::BASE_URL . '/', 'headers' => ['Authorization:Basic ' => $encodedToken]
             ]
         );
     }
@@ -57,6 +61,22 @@ class HttpClient
     public function get(string $endpoint): array
     {
         $this->response = $this->client->get($endpoint);
+        return $this->toArray();
+    }
+
+    /**
+     * Send post request
+     *
+     * @param string $endpoint
+     * @return array
+     * @throws GuzzleException
+     */
+    public function post(string $endpoint): array
+    {
+        $this->response = $this->client->post(
+            $endpoint,
+            ['json' => array_merge($this->defaults, $this->getBodyParams())]
+        );
         return $this->toArray();
     }
 
@@ -83,7 +103,8 @@ class HttpClient
             return [];
         }
 
-        return $response['data'];
+        unset($response['meta']);
+        return reset($response);
     }
 
     /**
