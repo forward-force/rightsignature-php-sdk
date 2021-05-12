@@ -120,7 +120,7 @@ trait Parametarable
      * @param array $mergeFields
      * @return Parametarable
      */
-    public function setMergeFields(array $mergeFields): Parametarable
+    public function setMergeFields(array $mergeFields): self
     {
         $this->mergeFields = $mergeFields;
         return $this;
