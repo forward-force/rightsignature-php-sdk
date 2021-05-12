@@ -15,6 +15,11 @@ trait Parametarable
     protected array $bodyParams = [];
 
     /**
+     * @var array
+     */
+    protected array $mergeFields = [];
+
+    /**
      * Add a query parameter
      *
      * @param  string $key
@@ -100,6 +105,60 @@ trait Parametarable
     public function addBodyParameter(string $key, $value): self
     {
         $this->bodyParams[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMergeFields(): array
+    {
+        return $this->mergeFields;
+    }
+
+    /**
+     * @param array $mergeFields
+     * @return Parametarable
+     */
+    public function setMergeFields(array $mergeFields): Parametarable
+    {
+        $this->mergeFields = $mergeFields;
+        return $this;
+    }
+
+    /**
+     * Add a merge field
+     *
+     * @param  string $key
+     * @param  $value
+     * @return $this
+     */
+    public function addMergeField(string $key, $value): self
+    {
+        $this->mergeFields[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * Remove a query parameter
+     *
+     * @param  string $key
+     * @return $this
+     */
+    public function removeMergeField(string $key): self
+    {
+        unset($this->mergeFields[$key]);
+        return $this;
+    }
+
+    /**
+     * Empty merge fields array
+     *
+     * @return $this
+     */
+    public function resetMergeFields(): self
+    {
+        $this->mergeFields = [];
         return $this;
     }
 }

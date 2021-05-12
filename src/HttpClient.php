@@ -14,7 +14,11 @@ class HttpClient
     use Parametarable;
 
     public const API_VERSION = 'v1';
-    public const BASE_URL = 'https://api.rightsignature.com/public/';
+    public const BASE_URL = 'https://api.rightsignature.com/public';
+
+    public array $defaults = [
+        'expires_in' => 30
+    ];
 
     /**
      * Guzzle Client
@@ -69,7 +73,10 @@ class HttpClient
      */
     public function post(string $endpoint): array
     {
-        $this->response = $this->client->post($endpoint, ['form_params' => $this->getBodyParams()]);
+        $this->response = $this->client->post(
+            $endpoint,
+            ['json' => array_merge($this->defaults, $this->getBodyParams())]
+        );
         return $this->toArray();
     }
 
