@@ -91,6 +91,11 @@ class Document extends HttpClient implements ApiAwareContract
         $mapped = [];
         foreach ($mergeFields as $id => $value) {
             $uuid = array_search($id, $idMap);
+
+            if (!$uuid || !isset($map[$uuid])) {
+                continue;
+            }
+
             $component = $map[$uuid];
 
             if ($component['type'] == 'TextComponent') {
