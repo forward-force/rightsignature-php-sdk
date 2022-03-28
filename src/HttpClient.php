@@ -46,7 +46,7 @@ class HttpClient
         $encodedToken = base64_encode($apiKey);
         $this->client = new Client(
             [
-                'base_uri' => self::BASE_URL . '/', 'headers' => ['Authorization:Basic ' => $encodedToken]
+                'base_uri' => self::BASE_URL . '/', 'headers' => ['Authorization' => 'Basic ' . $encodedToken]
             ]
         );
     }
